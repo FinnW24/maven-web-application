@@ -97,13 +97,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>Landmark Technologies Releases Nexus Repository</name>
-	      <url>http://18.212.62.246/finn/repository/tesla2-release/</url>
+	      <url>http://18.212.62.246:8081/finn/repository/tesla2-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>Landmark Technologies Snapshot Nexus Repository </name>
-	      <url>http://18.212.62.246/finn/repository/tesla2-snaphot/</url>
+	      <url>http://18.212.62.246:8081/finn/repository/tesla2-snaphot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
