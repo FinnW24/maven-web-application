@@ -1,0 +1,74 @@
+pipeline{
+    agent any
+    //options{}
+   // triggers{}
+    tools{
+        maven 'maven3.9.6'
+    }
+    stages{
+        stage('1.CloneCode'){
+            steps{
+               sh "echo cloning the lates app version"
+                git'https://github.com/FinnW24/maven-web-application.git'
+            }
+            }
+stage('2.Mavenbuild'){
+    steps{
+        sh "echo validate,complie and perform Unittesting"
+        sh "echo unit testing must pass for artifacts to be build"
+        sh "mvn clean package" 
+}
+}
+stage('3.CodeQualityAnanlysis'){
+    steps{
+     sh "mvn sonar:sonar" 
+     sh "echo codeQualityAnalysis completed"
+}
+}
+stage('4.UploadArtifacts'){
+    steps{
+     sh "mvn deploy"
+     sh "echo artifacts uploaded succesfully"
+     sh "echo Iam now a build and release engineer"
+     sh "echo build and release completed"
+}
+}
+stage('5.Deploy2UAT'){
+    steps{
+        sh "echo Deployment is ready for client review"
+        sh "echo using deploy to container tool"
+        deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://54.89.162.25:8080/')], contextPath: null, war: 'target/*war'
+}
+}
+stage('6.ManualApproval'){
+    steps{
+    sh "echo 'please review & approve' "
+    timeout(time:300, unit:'MINUTES')
+    {input message: 'application ready for deployment, review and approve '}
+}
+}
+stage('7.Deploy2Prod.'){
+    steps{
+        sh "echo application reviwed and approved and ready for the market"
+     deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://54.89.162.25:8080/')], contextPath: null, war: 'target/*war'
+}
+}
+stage('8.apm'){
+    steps{
+    sh "echo 'monitoring and observing and alerting'"
+    sh "echo 'application perfomance monitoring in progress'"
+}
+}
+    }
+    post{
+        always{
+            emailext body: 'Finn watangwa ', recipientProviders: [developers(), upstreamDevelopers()], subject: 'application status ', to: 'developers '
+}
+        success{
+            emailext body: 'Finn watangwa ', recipientProviders: [developers(), upstreamDevelopers()], subject: 'application success ', to: 'developers '
+}
+        failure{
+         emailext body: 'Finn watangwa ', recipientProviders: [developers(), upstreamDevelopers()], subject: 'application failure ', to: 'developers '
+    }
+    }
+}
