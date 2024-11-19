@@ -19,6 +19,7 @@ stage('2.Mavenbuild'){
         sh "mvn clean package" 
 }
 }
+/*
 stage('3.CodeQualityAnanlysis'){
     steps{
      sh "mvn sonar:sonar" 
@@ -59,7 +60,9 @@ stage('8.apm'){
     sh "echo 'application perfomance monitoring in progress'"
 }
 }
+*/
     }
+    /*
     post{
         always{
             emailext body: 'Finn watangwa ', recipientProviders: [developers(), upstreamDevelopers()], subject: 'application status ', to: 'developers '
@@ -71,4 +74,5 @@ stage('8.apm'){
          emailext body: 'Finn watangwa ', recipientProviders: [developers(), upstreamDevelopers()], subject: 'application failure ', to: 'developers '
     }
     }
+    */
 }
