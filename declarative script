@@ -25,7 +25,6 @@ stage('3.CodeQualityAnanlysis'){
      sh "echo codeQualityAnalysis completed"
 }
 }
-/*
 stage('4.UploadArtifacts'){
     steps{
      sh "mvn deploy"
@@ -34,6 +33,7 @@ stage('4.UploadArtifacts'){
      sh "echo build and release completed"
 }
 }
+/*
 stage('5.Deploy2UAT'){
     steps{
         sh "echo Deployment is ready for client review"
