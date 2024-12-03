@@ -33,34 +33,25 @@ stage('4.UploadArtifacts'){
      sh "echo build and release completed"
 }
 }
-/*
-stage('5.Deploy2UAT'){
-    steps{
-        sh "echo Deployment is ready for client review"
-        sh "echo using deploy to container tool"
-        deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://54.89.162.25:8080/')], contextPath: null, war: 'target/*war'
-}
-}
-stage('6.ManualApproval'){
-    steps{
-    sh "echo 'please review & approve' "
-    timeout(time:300, unit:'MINUTES')
-    {input message: 'application ready for deployment, review and approve '}
-}
-}
-stage('7.Deploy2Prod.'){
-    steps{
-        sh "echo application reviwed and approved and ready for the market"
-     deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://54.89.162.25:8080/')], contextPath: null, war: 'target/*war'
-}
-}
-stage('8.apm'){
-    steps{
-    sh "echo 'monitoring and observing and alerting'"
-    sh "echo 'application perfomance monitoring in progress'"
-}
-}
-*/
+      stage('predeployment'){
+      steps{
+        sh "echo creating docker image"
+        sh "docker build -t mylandmarktech/maven-web-app . "
+        sh "docker push mylandmarktech/maven-web-app"
+      }
+    }
+    stage('UnDeploy'){
+      steps{
+        sh "echo UNDEPLOYING existing application"
+        sh "docker rm -f webapp"
+      }
+    }
+    stage('deployment'){
+      steps{
+        sh "echo application ready for deployment"
+        sh "docker run -d -p 8000:8080 --name webapp mylandmarktech/maven-web-app"
+      }
+    }
     }
     /*
     post{
