@@ -18,8 +18,9 @@ stage('2.Mavenbuild'){
         sh "echo unit testing must pass for artifacts to be build"
         sh "mvn clean package" 
 }
-/*
 }
+    }
+/*
 stage('3.CodeQualityAnanlysis'){
     steps{
      sh "mvn sonar:sonar" 
